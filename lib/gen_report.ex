@@ -15,7 +15,7 @@ defmodule GenReport do
   end
 
   defp report_construct(
-         [name, hours, day, month, year],
+         [name, hours, _day, month, year],
          %{
            "all_hours" => all_hours,
            "hours_per_month" => hours_per_month,
@@ -23,8 +23,8 @@ defmodule GenReport do
          } = report
        ) do
     all_hours = Map.put(all_hours, name, sum_hours(all_hours[name], hours))
-    hours_per_month = Map.put(hours_per_month, name, sum_month_hours(hours_per_month[name], month, hours))
-    # hours_per_year = Map.put(foods, food_name, sum_foods(foods[food_name]))
+    hours_per_month = Map.put(hours_per_month, name, sum_period_hours(hours_per_month[name], month, hours))
+    hours_per_year = Map.put(hours_per_year, name, sum_period_hours(hours_per_year[name], year, hours))
 
     map_build(all_hours, hours_per_month, hours_per_year, report)
   end
@@ -36,10 +36,10 @@ defmodule GenReport do
     end
   end
 
-  defp sum_month_hours(name, month, hours) do
+  defp sum_period_hours(name, period, hours) do
     case name do
-      nil -> %{month => hours}
-      _ -> Map.put(name, month, sum_hours(name[month], hours))
+      nil -> %{period => hours}
+      _ -> Map.put(name, period, sum_hours(name[period], hours))
     end
   end
 
