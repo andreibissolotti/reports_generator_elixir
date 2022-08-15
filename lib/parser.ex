@@ -15,7 +15,7 @@ defmodule GenReport.Parser do
   }
 
   def parse_file(file_name) do
-    file_name
+    "reports/#{file_name}"
     |> File.stream!()
     |> Stream.map(fn line -> parse_line(line) end)
   end
